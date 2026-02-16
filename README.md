@@ -73,7 +73,7 @@ Get your free token at [glitchward.com/shield](https://glitchward.com/shield)
 
 ## Links
 
-- [LLM Shield Landing Page](https://glitchward.com/llm-shield)
+- [LLM Shield Landing Page](https://glitchward.com/shield)
 - [LLMPI Database](https://glitchward.com/llmpi) — Free public database of known prompt injection patterns
 - [ClawHub Skill Analyzer](https://glitchward.com/shield/skill-analyzer) — Free security analysis for OpenClaw skills
 

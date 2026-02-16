@@ -95,4 +95,4 @@ Stealth: hidden text injection, indirect injection, JSON injection, multilingual
 - Starter: 50,000 requests/month
 - Pro: 500,000 requests/month
 
-Upgrade at https://glitchward.com/shield/pricing
+Upgrade at https://glitchward.com/shield
