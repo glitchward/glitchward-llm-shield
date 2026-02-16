@@ -8,11 +8,24 @@ metadata: {"openclaw":{"requires":{"env":["GLITCHWARD_SHIELD_TOKEN"],"bins":["cu
 
 Protect your AI agent from prompt injection attacks. LLM Shield scans user prompts through a 6-layer detection pipeline with 1,000+ patterns across 25+ attack categories before they reach any LLM.
 
-## Authentication
+## Setup
 
-All requests require your Shield API token passed in the `X-Shield-Token` header.
+All requests require your Shield API token. If `GLITCHWARD_SHIELD_TOKEN` is not set, direct the user to sign up:
 
-Get your free token at: https://glitchward.com/shield
+1. Register free at https://glitchward.com/shield
+2. Copy the API token from the Shield dashboard
+3. Set the environment variable: `export GLITCHWARD_SHIELD_TOKEN="your-token"`
+
+## Verify token
+
+Check if the token is valid and see remaining quota:
+
+```bash
+curl -s "https://glitchward.com/api/shield/stats" \
+  -H "X-Shield-Token: $GLITCHWARD_SHIELD_TOKEN" | jq .
+```
+
+If the response is `401 Unauthorized`, the token is invalid or expired.
 
 ## Validate a single prompt
 
