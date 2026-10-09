@@ -2,7 +2,19 @@
 
 Prompt injection detection for AI agents. Scan prompts through a 6-layer detection pipeline before they reach your LLM.
 
-> **Privacy notice:** This skill sends prompt content to Glitchward's external API for analysis. Do not use it with prompts containing secrets, credentials, PII, regulated data, or proprietary content unless you have approved external transmission.
+## Security Model
+
+> **IMPORTANT:** This skill sends prompt content to Glitchward's external API (`https://glitchward.com`) for security analysis. This is **by design** — the API performs the detection.
+>
+> **Do NOT use this skill if:**
+> - Your prompts contain secrets, credentials, or API keys
+> - You're processing PII or regulated data (HIPAA, GDPR, etc.)
+> - Your content is proprietary and cannot leave your environment
+>
+> **Safe to use for:**
+> - General user conversations
+> - Public knowledge queries
+> - Non-sensitive task instructions
 
 ## Install
 
@@ -29,9 +41,9 @@ This skill adds prompt injection scanning to your AI agent. Before any user inpu
 
 - **1,000+ detection patterns** across 26 provider modules
 - **6-layer pipeline**: text normalization, pattern matching, encoding detection, invisible character analysis, known injection database, AI-powered analysis
-- **25+ attack categories**: jailbreaks, data exfiltration, MCP abuse, hooks hijacking, skill weaponization, multilingual attacks, and more
-- **10+ languages**: Korean, Japanese, Chinese, Russian, Spanish, German, French, Portuguese, Vietnamese
-- **Sub-50ms** response times
+- **26 attack categories**: jailbreaks, data exfiltration, MCP abuse, hooks hijacking, skill weaponization, multilingual attacks, and more
+- **20+ languages**: Korean, Japanese, Chinese, Russian, Spanish, German, French, Portuguese, Vietnamese, and more
+- **Low latency**: Typical response times under 50ms
 
 ## API Endpoints
 
@@ -43,11 +55,15 @@ This skill adds prompt injection scanning to your AI agent. Before any user inpu
 
 ## Example
 
+**Safe pattern using variables and jq:**
+
 ```bash
-curl -s -X POST "https://glitchward.com/api/shield/validate" \
-  -H "X-Shield-Token: $GLITCHWARD_SHIELD_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"prompt": "What is the capital of France?"}' | jq .
+PROMPT_TEXT="What is the capital of France?"
+echo "$PROMPT_TEXT" | jq -Rs '{prompt: .}' | \
+  curl -s -X POST "https://glitchward.com/api/shield/validate" \
+    -H "X-Shield-Token: $GLITCHWARD_SHIELD_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d @- | jq .
 ```
 
 Response:
@@ -71,9 +87,9 @@ When a prompt is flagged:
     {
       "category": "instruction_override",
       "severity": "critical",
-      "pattern": "role hijacking detected",
+      "pattern": "ignore_previous_rules",
       "matched_text": "...",
-      "description": "Attempted to override system instructions"
+      "description": "Detected attempt to override system behavior"
     }
   ],
   "request_id": "abc-123"
@@ -94,7 +110,6 @@ Get your free token at [glitchward.com/shield](https://glitchward.com/shield)
 
 - [LLM Shield Landing Page](https://glitchward.com/shield)
 - [LLMPI Database](https://glitchward.com/llmpi) — Free public database of known prompt injection patterns
-- [ClawHub Skill Analyzer](https://glitchward.com/shield/skill-analyzer) — Free security analysis for OpenClaw skills
 
 ## License
 
